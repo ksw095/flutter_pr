@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:flutter_application_pr/board/contest_board.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'info.dart';
+import 'cafe.dart';
+import 'study_recommend.dart';
 import 'board/contest_board.dart';
 import 'board/academy_board.dart';
 import 'board/capstone_board.dart';
 import 'board/activiy_board.dart';
-import 'info.dart';
-import 'cafe.dart';
 
 void main() {
   runApp(MyApp());
@@ -36,7 +36,6 @@ class MyApp extends StatelessWidget {
         ),
         splashIconSize: 180,
         nextScreen: const MyHomePage(
-          //
           title: 'demo',
         ),
         splashTransition: SplashTransition.fadeTransition,
@@ -87,7 +86,6 @@ class _MyHomePageState extends State<MyHomePage> {
               color: Colors.white, fontSize: 30.0, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        //
         leading: IconButton(
           icon: const Icon(Icons.home, color: Colors.white),
           onPressed: () {
@@ -96,7 +94,6 @@ class _MyHomePageState extends State<MyHomePage> {
             );
           },
         ),
-
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.notifications_outlined, color: Colors.white),
@@ -244,7 +241,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: <Widget>[
                   _buildFeatureButton(
                     icon: Icons.group,
-                    label: '팀원 구인',
+                    label: '팀원 모집',
                     onTap: () {
                       // Handle tap
                     },
@@ -260,7 +257,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     icon: Icons.local_cafe,
                     label: '카페 O:TT',
                     onTap: () {
-                      // Handle tap
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CafePage()),
+                      );
                     },
                   ),
                   _buildFeatureButton(
@@ -274,7 +274,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     icon: Icons.school,
                     label: '추천 공부',
                     onTap: () {
-                      // Handle tap
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Studyrecommend()),
+                      );
                     },
                   ),
                   _buildFeatureButton(
@@ -302,7 +305,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 const Expanded(
                   child: Text(
-                    '    팀원 구인 게시판',
+                    '    팀원 모집 게시판',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -312,7 +315,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 TextButton(
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('전체 게시물에서 검색합니다.')),                          
+                      const SnackBar(content: Text('전체 게시물을 최신순으로 보여줍니다.')),
                     );
                   },
                   child: const Row(
@@ -321,15 +324,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         '전체 검색',
                         style: TextStyle(fontSize: 13),
                       ),
-                      Icon(Icons.search, size: 13),
+                      Icon(Icons.keyboard_arrow_right, size: 13),
                     ],
                   ),
                 ),
               ],
             ),
-            SizedBox(
-              height: 10,
-            ), //
+            const SizedBox(height: 10), //
             SizedBox(
               height: 190,
               child: ListView(
@@ -347,9 +348,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     },
                   ),
                   _buildContentCard(
-                    title: '교내외 대회',
-                    content: '...\n\n...\n\n...\n\n• 최신글 4개',
-                  onTap: () {
+                    title: '교내/외 대회',
+                    content: '#공모전\n\n#공경진\n\n...\n\n• 최신글 4개',
+                    onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => ContestBoard()),
@@ -357,9 +358,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     },
                   ),
                   _buildContentCard(
-                    title: '교외 활동', // \n(공모전&대외활동)
+                    title: '교외 활동',
                     content:
-                        '...\n\n...\n\n...\n\n• 최신글 4개', // '예)\n - 공모전 • 2명 • 무관\n - 공모전 • 1명 • 백\n - 대외활동 • 3명 • 백',
+                        '#대외활동\n\n...\n\n...\n\n• 최신글 4개', // '예)\n - 공모전 • 2명 • 무관\n - 공모전 • 1명 • 백\n - 대외활동 • 3명 • 백',
                     onTap: () {
                       Navigator.push(
                         context,
@@ -368,8 +369,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     },
                   ),
                   _buildContentCard(
-                    title: '교내 학술 모임',
-                    content: '...\n\n...\n\n...\n\n• 최신글 4개',
+                    title: '스터디',
+                    content: '#개인스터디\n\n#학술모임\n\n#학술동아리\n\n• 최신글 4개',
                     onTap: () {
                       Navigator.push(
                         context,
@@ -428,12 +429,17 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 Expanded(
-                  child: GestureDetector(
+                  child: InkWell(
                     onTap: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('콤인 채팅 봇 페이지로 이동합니다.')),
-                      );
+                      // ScaffoldMessenger.of(context).showSnackBar(
+                      //   const SnackBar(content: Text('콤인 채팅 봇 페이지로 이동합니다.')),
+                      // );
                       // 원하는 페이지로 이동 - navigator.push
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Studyrecommend()),
+                      );
                     },
                     child: Container(
                       width: double.infinity,
@@ -507,16 +513,16 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
 
-            GestureDetector(
-              // InkWell하면 누른 효과가 생김
+            InkWell(
+              // GestureDetector하면 누르는 효과 사라짐
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CafePage()),
+                  MaterialPageRoute(builder: (context) => const CafePage()),
                 );
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('카페 O:TT 페이지로 이동합니다.')),
-                );
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //   const SnackBar(content: Text('카페 O:TT 페이지로 이동합니다.')),
+                // );
                 // 원하는 페이지로 이동 - navigator.push
               },
               child: SizedBox(
@@ -875,4 +881,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
